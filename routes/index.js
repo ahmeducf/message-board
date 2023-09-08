@@ -4,10 +4,14 @@ const Message = require('../models/message');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-  const messages = await Message.find().sort('-createdAt');
+  try {
+    const messages = await Message.find().sort('-createdAt');
 
-  res.status(200);
-  res.render('index', { title: 'Message Board', messages });
+    res.status(200);
+    res.render('index', { title: 'Message Board', messages });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/new', (req, res, next) => {
