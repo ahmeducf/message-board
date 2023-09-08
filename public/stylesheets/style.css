@@ -154,6 +154,20 @@ main {
   width: 100%;
 }
 
+.form-group .wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-group .wrapper .help-block {
+  font-size: 0.7rem;
+  color: #B00020;
+  font-style: italic;
+}
+
 .form-group label {
   font-size: 1rem;
   font-weight: 500;
