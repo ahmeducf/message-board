@@ -50,6 +50,10 @@ header h1 {
   margin-bottom: 10px;
 }
 
+header a {
+  transition: background-color 0.3s ease-in-out;
+}
+
 header a,
 .back-link,
 form button[type='submit'] {
@@ -197,6 +201,7 @@ form button[type='submit'] {
   transition: background-color 0.3s ease-in-out;
 }
 
+header a:hover,
 form button[type='submit']:hover {
   background-color: #0095d6;
 }
