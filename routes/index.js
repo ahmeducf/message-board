@@ -5,10 +5,13 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   const messages = await Message.find().sort('-createdAt');
+
+  res.status(200);
   res.render('index', { title: 'Message Board', messages });
 });
 
 router.get('/new', (req, res, next) => {
+  res.status(200);
   res.render('form', { title: 'New Message', sender: '', text: '' });
 });
 
@@ -30,6 +33,7 @@ function validateFormData(req, res, next) {
   }
 
   if (senderErr || textErr) {
+    res.status(400);
     res.render('form', {
       title: 'Error creating message',
       sender,
@@ -48,6 +52,8 @@ router.post('/new', validateFormData, async (req, res, next) => {
     const { sender, text } = req.body;
     const message = new Message({ sender, text });
     await message.save();
+
+    res.status(201);
     res.redirect('/');
   } catch (error) {
     next(error);
