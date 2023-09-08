@@ -5,11 +5,11 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   const messages = await Message.find().sort('-createdAt');
-  res.render('index', { messages });
+  res.render('index', {title: 'Message Board', messages });
 });
 
 router.get('/new', (req, res, next) => { 
-  res.render('form');
+  res.render('form', { title: 'New Message' });
 });
 
 router.post('/new', async (req, res, next) => { 
