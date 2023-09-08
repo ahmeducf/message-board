@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .back
+    a(href="/") Back to messages
+  .form-container
+    h1 Send a message
+    form(action="/new" method="POST")
+      .form-group
+        label(for="sender") Your name
+        input#sender(type="text" name="sender")
+      .form-group
+        label(for="text") Your message
+        textarea#text(name="text" rows="5" cols="30")
+      button(type="submit") Send message

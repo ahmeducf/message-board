@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .container 
+    header
+      h1= title
+      p Welcome to #{title}!
+      a(href="/new") Add New Message
+    main
+      ul.messages-list
+        each message in messages
+          li.message-item
+            .row 
+              h2.message-sender= message.sender
+              span.message-date= new Date(message.createdAt).toLocaleString()
+            .row
+              p.message-text= message.text
