@@ -8,6 +8,8 @@
     "debug": "DEBUG=message-board:* npm run dev"
   },
   "dependencies": {
+    "@sentry/node": "^7.68.0",
+    "@sentry/profiling-node": "^1.2.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.3.1",

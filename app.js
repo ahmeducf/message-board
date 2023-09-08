@@ -1,35 +1,32 @@
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mongoose = require('mongoose');
-const debug = require('debug')('message-board:app');
-require('dotenv').config();
+const Sentry = require('@sentry/node');
 
 const { createWriteStream } = require('fs');
+const path = require('path');
+
+const { initSentry } = require('./services/sentry');
+const { connectDB } = require('./services/mongodb');
 const indexRouter = require('./routes/index');
 
+require('dotenv').config();
+
 const app = express();
-
-// Connect to MongoDB
-const connectionString = process.env.MONGODB_CONNECTION_STRING;
-mongoose.set('strictQuery', false);
-
-async function connect() {
-  try {
-    await mongoose.connect(connectionString);
-    debug('Connected to MongoDB');
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-connect();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+initSentry(app);
+connectDB();
+
+// The request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
+
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler());
 
 if (process.env.NODE_ENV === 'production') {
   const logAccessStream = createWriteStream(
@@ -51,6 +48,9 @@ app.use('/', indexRouter);
 app.use((req, res, next) => {
   next(createError(404));
 });
+
+// The error handler must be registered before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
 
 // error handler
 app.use((err, req, res, next) => {
