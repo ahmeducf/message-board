@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const debug = require('debug')('message-board:app');
 require('dotenv').config();
 
+const { createWriteStream } = require('fs');
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -30,7 +31,15 @@ connect();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+if (process.env.NODE_ENV === 'production') {
+  const logAccessStream = createWriteStream(
+    path.join(__dirname, 'access.log'),
+    { flags: 'a' },
+  );
+  app.use(logger('combined', { stream: logAccessStream }));
+} else {
+  app.use(logger('dev'));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
