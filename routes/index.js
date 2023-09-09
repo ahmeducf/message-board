@@ -45,10 +45,10 @@ function validateFormData(req, res, next) {
       senderErr,
       textErr,
     });
-    return;
+    res.end();
+  } else {
+    next();
   }
-
-  next();
 }
 
 router.post('/new', validateFormData, async (req, res, next) => {
