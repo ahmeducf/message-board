@@ -15,5 +15,5 @@ block content
         .wrapper
           label(for="text") Your message *
           span.help-block= textErr
-        textarea#text(name="text" rows="5" cols="30" value=text)
+        textarea#text(name="text" rows="5" cols="30")= text
       button(type="submit") Send message
